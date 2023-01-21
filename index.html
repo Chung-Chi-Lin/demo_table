@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Hello World">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="https://jqueryui.com/resources/demos/style.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- bootstrap CSS-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <!-- sweetAlert2 -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="demo.js"></script>
+  
+  <title>個人資料表</title>
+</head>
+
+<body class="bg">
+  <nav class="nav navbar navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand pe-none fw-bold" href="#">
+        個人資料表
+      </a>
+    </div>
+  </nav>
+  <main class="container mt-5">
+    <header class="mb-3 d-flex justify-content-between">
+      <!-- Button trigger modal -->
+      <div>
+        <button id="showAllCrew" type="button" class="btn btn-outline-dark me-2">
+          顯示全部
+        </button>
+        <button type="button" class="btn btn-outline-dark reModal" data-bs-toggle="modal" data-bs-target="#addModal">
+          新增
+        </button>
+      </div>
+      <div class="input-group w-50">
+        <input id="myInput" type="text" class="form-control" placeholder="請輸入人員資料" aria-label="請輸入人員資料" aria-describedby="button-addon2">
+        <button id="searchCrew" class="btn btn-outline-secondary" type="button" id="button-addon2">搜尋</button>
+      </div>
+    </header>
+    <div class="table-responsive">
+      <table id="cardtable" class="table table-striped table-bordered border-secondary">
+        <thead>
+          <tr class="text-center">
+            <th scope="col" onmouseout="mouseOut(0)" onmouseenter="mouseEnter(0)">中文名字</th>
+            <th scope="col" onmouseout="mouseOut(1)" onmouseenter="mouseEnter(1)">英文名字</th>
+            <th scope="col" onmouseout="mouseOut(2)" onmouseenter="mouseEnter(2)">電子郵件</th>
+            <th scope="col" onmouseout="mouseOut(3)" onmouseenter="mouseEnter(3)">性別</th>
+            <th scope="col" onmouseout="mouseOut(4)" onmouseenter="mouseEnter(4)">編輯</th>
+          </tr>
+        </thead>
+        <tbody id="crew" class="fw-bold"></tbody>
+      </table>
+    </div>
+    <!-- 新增Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header nav">
+            <h5 class="modal-title fw-bold" id="addModalLabel">新增人員</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- validate -->
+            <form class="row g-3 needs-validation" id="addform" novalidate>
+              <div class="col-md-6">
+                <label for="addcnname" class="form-label">中文姓名</label>
+                <input type="text" name="cnname" class="form-control" id="addcnname" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入 中文姓名
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="addenname" class="form-label">英文姓名</label>
+                <input name="enname" type="text" class="form-control" id="addenname" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入 英文姓名
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="addPhone" class="form-label">手機號碼</label>
+                <input type="tel" class="form-control" id="addPhone" placeholder="0989456123" required minlength="10" maxlength="10" pattern="09\d{8}">
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入正確 電話號碼 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="addEmail" class="form-label">電子郵件</label>
+                <input type="email" name="emil" class="form-control" id="addEmail" placeholder="name@ex.com"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請檢查 Email 格式
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="d-block mb-2">性別</label>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" id="sexMan" value="0" name="addsex" required>
+                  <label class="form-check-label" for="sexMan">男</label>
+                </div>
+                <div class="form-check mb-3">
+                  <input type="radio" class="form-check-input checked" id="sexWoman" name="addsex" value="1" required>
+                  <label class="form-check-label" for="sexWoman">女</label>
+                  <div class="invalid-feedback">請勾選性別</div>
+                </div>
+              </div>
+              <div class="col-md-12 text-center">
+                <p class="text-warning ">*請確認中文與英文姓名，格式錯誤將無法新增*</p>
+              </div>
+          </div>
+            <div class="modal-footer">
+              <button id="addCrew" class="btn btn-primary" type="submit">新增</button>
+              <button type="button" class="btn btn-primary reset">重新輸入</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- 修改Modal -->
+    <div class="modal fade" id="modifyModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-warning">
+            <h5 class="modal-title fw-bold" id="modifyModalLabel">編輯人員</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- validate -->
+            <form class="row g-3 needs-validation" id="modifyform" novalidate>
+              <div class="col-md-6">
+                <label for="modifycnname" class="form-label">中文姓名</label>
+                <input type="text" name="cnname" class="form-control" id="modifycnname" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入 中文姓名
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="modifyenname" class="form-label">英文姓名</label>
+                <input name="enname" type="text" class="form-control" id="modifyenname" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入 英文姓名
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="modifyPhone" class="form-label">手機號碼</label>
+                <input type="tel" class="form-control" id="modifyPhone" placeholder="0989456123" required minlength="10" maxlength="10" pattern="09\d{8}">
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請輸入正確 電話號碼 
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="modifyEmail" class="form-label">電子郵件</label>
+                <input type="email" name="emil" class="form-control" id="modifyEmail" placeholder="name@ex.com"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <div class="valid-feedback">
+                  驗證成功 !
+                </div>
+                <div class="invalid-feedback">
+                  請檢查 Email 格式
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="d-block mb-2">性別</label>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input" id="modifySexMan" value="0" name="modifysex" required>
+                  <label class="form-check-label" for="modifySexMan">男</label>
+                </div>
+                <div class="form-check mb-3">
+                  <input type="radio" class="form-check-input" id="modifySexWoman" name="modifysex" value="1" required>
+                  <label class="form-check-label" for="modifySexWoman">女</label>
+                  <div class="invalid-feedback">請勾選性別</div>
+                </div>
+              </div>
+          </div>
+            <div class="modal-footer">
+              <button id="modifyCrew" class="btn btn-primary" type="submit">編輯</button>
+              <button type="button" class="btn btn-primary reset">重新輸入</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- 刪除Modal -->
+    <div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title fw-bold" id="delModalLabel">確認刪除?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body pt-4">
+            <p class="fs-4">您確定要移除此筆人員 ? 刪除無法返回 !</p>
+          </div>
+          <div class="modal-footer">
+            <button id="checkDel" type="button" class="btn btn-danger">確認刪除</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="fixed-bottom text-end bg">
+    <small class="fw-bold pe-3">測驗使用</small>
+  </footer>
+  <!-- bootstrapJS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
+</html>

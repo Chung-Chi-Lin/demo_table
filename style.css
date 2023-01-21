@@ -1,0 +1,23 @@
+.nav {
+  background-color: #4f81bd;
+}
+
+.bg {
+  background: #5e99e209;
+}
+
+tbody tr:hover {
+  background-color: #2085ff6b;
+}
+
+thead tr:hover {
+  background-color: #c7f6ffd3;
+}
+
+.btn:hover {
+  transform: translateY(-6px);
+}
+
+.btn-h:hover {
+  color: #ffae00;
+}
